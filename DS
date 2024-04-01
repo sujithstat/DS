@@ -1,0 +1,16 @@
+##### Pract1
+##### Data Exploration & Cleaning #######
+#1
+rm(list=ls())
+Z=c(14.5,16.7,18.8,10.3,NA,11.5,19.5,20.6)
+mean(Z)
+Z[is.na(Z)]=mean(Z,na.rm=TRUE)
+Z
+mean(Z)
+var(Z)
+class(Z)
+str(Z)
+dim(Z)
+
+#2
+rm(list=ls())
