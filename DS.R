@@ -133,3 +133,73 @@ data2=data.frame(year2,std,fac)
 ggplot(data1,aes(x = year,y = hum+sci+com))+geom_bar(stat = "identity")+xlab("year")+ylab("total no. of students")+ggtitle("Bar Plot of total no. of students")
 ggplot(data2,aes(x = year2,y = std,fill=fac))+geom_bar(stat = "identity",position = "dodge")+ggtitle("Bar Plot no. of students in different depts")
 ggplot(data2,aes(x = year2,y = std,fill=fac))+geom_bar(stat = "identity",position = "stack")+ggtitle("Bar Plot no. of students in different depts")
+
+#7
+rm(list=ls())
+library(ggplot2)
+data("airquality")
+ggplot(airquality,aes(y=Wind)) + geom_boxplot() + ggtitle("Boxplot of wind")
+
+#8
+rm(list = ls())
+data("diamonds")
+ggplot(diamonds,aes(x=cut,y=price)) + geom_boxplot() + ggtitle("Boxplot of diamonds")
+
+#9
+rm(list=ls())
+data("iris")
+windows(width = 4,height = 4)
+ggplot(iris,aes(x=Species,y=Sepal.Length)) + geom_boxplot() + ggtitle("Boxplot of Sepal.Length")
+ggplot(iris,aes(x=Species,y=Sepal.Width)) + geom_boxplot() + ggtitle("Boxplot of Sepal.Width")
+ggplot(iris,aes(x=Species,y=Petal.Length)) + geom_boxplot() + ggtitle("Boxplot of Petal.Length")
+ggplot(iris,aes(x=Species,y=Petal.Width)) + geom_boxplot() + ggtitle("Boxplot of Petal.Width")
+
+##### Pract3
+####### Simple Linear Regression - 1
+#1
+rm(list = ls())
+data("anscombe")
+#attach(anscombe)
+cor(x1,y1)
+cor(x2,y2)
+cor(x3,y3)
+cor(x4,y4)
+model1=lm(y1~x1);model1
+model2=lm(y2~x2);model2
+model3=lm(y3~x3);model3
+model4=lm(y4~x4);model4
+par(mfrow=c(2,2))
+plot(x = x1,y = y1)
+abline(model1)
+plot(x = x2,y = y2)
+abline(model2)
+plot(x = x3,y = y3)
+abline(model3)
+plot(x = x4,y = y4)
+abline(model4)
+r1=model1$residuals
+r2=model2$residuals
+r3=model3$residuals
+r4=model4$residuals
+
+plot(predict(model1),r1,abline(h=0))
+plot(predict(model2),r2,abline(h=0))
+plot(predict(model3),r3,abline(h=0))
+plot(predict(model4),r4,abline(h=0))
+#From the residual plots we see that only the residuals in the 1st plot are randomly distributed, and in the other plots they follow some pattern. Hence. only the 1st model is adequate.
+
+#2
+rm(list = ls())
+data("cars")
+#attach(cars)
+cor.test(speed,dist)
+# cor=0.8068949,  p-value = 1.49e-12, since p-value < 0.05 we reject H0:rho=0
+model1=lm(dist~speed);model1
+ggplot(cars,aes(x = speed,y = dist))+geom_point(size=2)+geom_smooth(method = "lm")
+summary(model1)
+summary(model1)$r.squared
+confint(model1)
+ggplot(NULL,aes(x = predict(model1),y = model1$residuals))+geom_point(size=2)+geom_hline(yintercept = c(0,0))
+shapiro.test(model1$residuals)
+qqnorm(model1$residuals)
+qqline(model1$residuals)
