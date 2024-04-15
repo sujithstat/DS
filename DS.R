@@ -203,3 +203,28 @@ ggplot(NULL,aes(x = predict(model1),y = model1$residuals))+geom_point(size=2)+ge
 shapiro.test(model1$residuals)
 qqnorm(model1$residuals)
 qqline(model1$residuals)
+
+
+########Pract4
+######## SLR-2
+rm(list=ls())
+data("cars")
+nrow(cars)
+samp_size=floor(0.8*nrow(cars));samp_size
+set.seed(123)
+train_ind=sample(seq_len(nrow(cars)),size = samp_size);train_ind
+train=cars[train_ind,]
+test=cars[-train_ind,]
+trainm=lm(train$dist~train$speed);trainm
+summary(trainm)
+Res_train=resid(trainm)
+b0=coefficients(trainm)[1]
+b1=coefficients(trainm)[2]
+test_dist=b0+b1*test$speed;test_dist
+#fitted values of the test set
+Res_test=test$dist-test_dist
+#Actual value - fitted value
+var.test(Res_train,Res_test)
+#H0: sigma1sq=sigma2sq <=> sigma1sq/sigma2sq=1
+#Since p-value > 0.05 we do not reject H0
+#Therefore, the model i a good fit.
