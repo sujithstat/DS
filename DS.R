@@ -227,4 +227,47 @@ Res_test=test$dist-test_dist
 var.test(Res_train,Res_test)
 #H0: sigma1sq=sigma2sq <=> sigma1sq/sigma2sq=1
 #Since p-value > 0.05 we do not reject H0
-#Therefore, the model i a good fit.
+#Therefore, the model is a good fit.
+
+#2
+rm(list = ls())
+library(ggplot2)
+data("mtcars")
+attach(mtcars)
+mtcars
+cor.test(mpg,hp)
+# cor=-0.7761684,  p-value = 1.788e-07, since p-value < 0.05 we reject H0:rho=0
+model1=lm(mpg~hp);model1
+ggplot(mtcars,aes(x = hp,y = mpg))+geom_point(size=2)+geom_smooth(method = "lm")
+summary(model1)
+summary(model1)$r.squared
+confint(model1)
+ggplot(NULL,aes(x = predict(model1),y = model1$residuals))+geom_point(size=2)+geom_hline(yintercept = c(0,0))
+#
+shapiro.test(model1$residuals)
+#Normality assumption is valid at 1% los but not valid at 5% los
+qqnorm(model1$residuals)
+qqline(model1$residuals)
+
+
+
+
+nrow(mtcars)
+samp_size=floor(0.8*nrow(mtcars));samp_size
+set.seed(123)
+train_ind=sample(seq_len(nrow(mtcars)),size = samp_size);train_ind
+train=mtcars[train_ind,]
+test=mtcars[-train_ind,]
+trainm=lm(train$mpg~train$hp);trainm
+summary(trainm)
+Res_train=resid(trainm)
+b0=coefficients(trainm)[1]
+b1=coefficients(trainm)[2]
+test_mpg=b0+b1*test$hp;test_mpg
+#fitted values of the test set
+Res_test=test$mpg-test_mpg
+#Actual value - fitted value
+var.test(Res_train,Res_test)
+#H0: sigma1sq=sigma2sq <=> sigma1sq/sigma2sq=1
+#Since p-value > 0.05 we do not reject H0
+#Therefore, the model is a good fit.
