@@ -35,7 +35,6 @@ cor(ht,wt)
 rm(list = ls())
 data("cars")
 help(cars)
-#The data give the speed of cars and the distances taken to stop. Note that the data were recorded in the 1920s.
 attach(cars)
 class(cars)
 str(cars)
@@ -48,7 +47,6 @@ rm(list = ls())
 data("attenu")
 help("attenu")
 attach(attenu)
-#This data gives peak accelerations measured at various observation stations for 23 earthquakes in California. The data have been used by various workers to estimate the attenuating affect of distance on ground acceleration.
 class(attenu)
 str(attenu)
 dim(attenu)
@@ -60,7 +58,6 @@ tail(attenu)
 rm(list = ls())
 data("airquality")
 help("airquality")
-#Daily air quality measurements in New York, May to September 1973.
 attach(airquality)
 class(airquality)
 str(airquality)
@@ -148,7 +145,7 @@ ggplot(diamonds,aes(x=cut,y=price)) + geom_boxplot() + ggtitle("Boxplot of diamo
 #9
 rm(list=ls())
 data("iris")
-windows(width = 4,height = 4)
+#windows(width = 4,height = 4)
 ggplot(iris,aes(x=Species,y=Sepal.Length)) + geom_boxplot() + ggtitle("Boxplot of Sepal.Length")
 ggplot(iris,aes(x=Species,y=Sepal.Width)) + geom_boxplot() + ggtitle("Boxplot of Sepal.Width")
 ggplot(iris,aes(x=Species,y=Petal.Length)) + geom_boxplot() + ggtitle("Boxplot of Petal.Length")
@@ -159,7 +156,7 @@ ggplot(iris,aes(x=Species,y=Petal.Width)) + geom_boxplot() + ggtitle("Boxplot of
 #1
 rm(list = ls())
 data("anscombe")
-#attach(anscombe)
+attach(anscombe)
 cor(x1,y1)
 cor(x2,y2)
 cor(x3,y3)
@@ -191,7 +188,7 @@ plot(predict(model4),r4,abline(h=0))
 #2
 rm(list = ls())
 data("cars")
-#attach(cars)
+attach(cars)
 cor.test(speed,dist)
 # cor=0.8068949,  p-value = 1.49e-12, since p-value < 0.05 we reject H0:rho=0
 model1=lm(dist~speed);model1
@@ -253,7 +250,7 @@ qqline(model1$residuals)
 
 
 nrow(mtcars)
-samp_size=floor(0.8*nrow(mtcars));samp_size
+samp_size=floor(0.75*nrow(mtcars));samp_size
 set.seed(123)
 train_ind=sample(seq_len(nrow(mtcars)),size = samp_size);train_ind
 train=mtcars[train_ind,]
@@ -271,3 +268,108 @@ var.test(Res_train,Res_test)
 #H0: sigma1sq=sigma2sq <=> sigma1sq/sigma2sq=1
 #Since p-value > 0.05 we do not reject H0
 #Therefore, the model is a good fit.
+
+####### Pract5
+####### SLR-3
+rm(list = ls())
+data("airquality")
+attach(airquality)
+help("airquality")
+#Daily air quality measurements in New York, May to September 1973.
+class(airquality)
+str(airquality)
+dim(airquality)
+head(airquality)
+oz=Ozone
+tem=Temp
+oz[is.na(oz)]=mean(oz,na.rm = TRUE)    ###########################
+tem[is.na(tem)]=mean(tem,na.rm = TRUE) ###########################
+data1=data.frame(tem,oz)
+
+library(ggplot2)
+cor.test(oz,tem)
+# cor=0.608742 ,  p-value < 2.2e-16, since p-value < 0.05 we reject H0:rho=0
+model1=lm(oz~tem);model1
+#model2=lm(tem~oz);model2
+
+ggplot(data1,aes(x = tem,y = oz))+geom_point(size=2)+geom_smooth(method = "lm")
+
+summary(model1)
+summary(model1)$r.squared
+confint(model1)
+ggplot(NULL,aes(x = predict(model1),y = model1$residuals))+geom_point(size=2)+geom_hline(yintercept = c(0,0))
+shapiro.test(rstandard(model1))$p.value
+shapiro.test(rstudent(model1))$p.value
+qqnorm(model1$residuals)
+qqline(model1$residuals)
+#Normality assumption is not valid
+
+
+#2
+rm(list = ls())
+data("faithful")
+attach(faithful)
+
+help("faithful")
+#Waiting time between eruptions and the duration of the eruption for the Old Faithful geyser in Yellowstone National Park, Wyoming, USA.
+class(faithful)
+str(faithful)
+dim(faithful)
+head(faithful)
+
+y=eruptions
+x=waiting
+data1=data.frame(y,x)
+
+cor.test(y,x)
+# cor=0.9008112,  p-value < 2.2e-16, since p-value < 0.05 we reject H0:rho=0
+model1=lm(y~x);model1
+ggplot(faithful,aes(x = x,y = y))+geom_point(size=2)+geom_smooth(method = "lm")
+summary(model1)
+summary(model1)$r.squared
+confint(model1)
+ggplot(NULL,aes(x = predict(model1),y = model1$residuals))+geom_point(size=2)+geom_hline(yintercept = c(0,0))
+shapiro.test(model1$residuals)
+#Normality assumption is valid at 5% los
+qqnorm(model1$residuals)
+qqline(model1$residuals)
+
+nrow(data1)
+samp_size=floor(0.75*nrow(data1))#;samp_size
+set.seed(123)
+train_ind=sample(seq_len(nrow(data1)),size = samp_size)#;train_ind
+train=data1[train_ind,]
+test=data1[-train_ind,]
+trainm=lm(train$y~train$x)#;trainm
+#summary(trainm)
+Res_train=resid(trainm)
+b0=coefficients(trainm)[1]
+b1=coefficients(trainm)[2]
+test_y=b0+b1*test$x#;test_y
+#fitted values of the test set
+Res_test=test$y-test_y
+#Actual value - fitted value
+var.test(Res_train,Res_test)
+#H0: sigma1sq=sigma2sq <=> sigma1sq/sigma2sq=1
+#Since p-value > 0.05 we do not reject H0
+#Therefore, the model is a good fit.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
