@@ -358,7 +358,7 @@ var.test(Res_train,Res_test)
 ############ Pract6
 ############ MLR 3
 #1
-rm(list = lS())
+rm(list = ls())
 library(tidyverse)
 library(datarium)
 data("marketing",package = "datarium")
@@ -368,13 +368,16 @@ model1=lm(sales~youtube+facebook+newspaper)
 summary(model1)$r.squared
 summary(model1)$adj.r.squared
 summary(model1)
+#Since p-value<0.05 we reject H0:b1=b2=0
 #selecting the best model
 step(model1,direction = "both")
+#newspaper is not significant. Therefore the new fitted model is sales ~ youtube + facebook
 #New model
 M1=lm(sales~youtube+facebook)
 summary(M1)$r.squared
 summary(M1)$adj.r.squared
 summary(M1)
+#Since p-value<0.05 we reject H0:b1=b2=0
 ggplot(marketing,aes(x=youtube,y=sales,col=facebook))+geom_point(size=2)+geom_smooth(method = "lm")
 
 
@@ -408,22 +411,4 @@ var.test(Res_train,Res_test)
 
 library(car)
 vif(M1)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#since VIFs are <5 Multicollinearity does not exist
