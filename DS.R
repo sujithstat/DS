@@ -365,15 +365,20 @@ data("marketing",package = "datarium")
 attach(marketing)
 summary(marketing)
 model1=lm(sales~youtube+facebook+newspaper)
+summary(model1)$r.squared
+summary(model1)$adj.r.squared
 summary(model1)
 #selecting the best model
 step(model1,direction = "both")
 #New model
 M1=lm(sales~youtube+facebook)
+summary(M1)$r.squared
+summary(M1)$adj.r.squared
 summary(M1)
 ggplot(marketing,aes(x=youtube,y=sales,col=facebook))+geom_point(size=2)+geom_smooth(method = "lm")
 library(car)
 vif(M1)
+
 
 
 
