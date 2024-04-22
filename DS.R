@@ -376,6 +376,36 @@ summary(M1)$r.squared
 summary(M1)$adj.r.squared
 summary(M1)
 ggplot(marketing,aes(x=youtube,y=sales,col=facebook))+geom_point(size=2)+geom_smooth(method = "lm")
+
+
+y=sales
+x1=youtube
+x2=facebook
+data1=data.frame(y,x1,x2)
+
+
+#nrow(data1)
+samp_size=floor(0.8*nrow(data1))#;samp_size
+set.seed(123)
+train_ind=sample(seq_len(nrow(data1)),size = samp_size)#;train_ind
+train=data1[train_ind,]
+test=data1[-train_ind,]
+trainm=lm(train$y~train$x1+train$x2)#;trainm
+#summary(trainm)
+Res_train=resid(trainm)
+b0=coefficients(trainm)[1]
+b1=coefficients(trainm)[2]
+b2=coefficients(trainm)[3]
+test_y=b0+b1*test$x1+b2*test$x2#;test_y
+#fitted values of the test set
+Res_test=test$y-test_y
+#Actual value - fitted value
+var.test(Res_train,Res_test)
+#H0: sigma1sq=sigma2sq <=> sigma1sq/sigma2sq=1
+#Since p-value > 0.05 we do not reject H0
+#Therefore, the model is a good fit.
+
+
 library(car)
 vif(M1)
 
