@@ -355,6 +355,25 @@ var.test(Res_train,Res_test)
 #Therefore, the model is a good fit.
 
 
+############ Pract6
+############ MLR 3
+#1
+rm(list = lS())
+library(tidyverse)
+library(datarium)
+data("marketing",package = "datarium")
+attach(marketing)
+summary(marketing)
+model1=lm(sales~youtube+facebook+newspaper)
+summary(model1)
+#selecting the best model
+step(model1,direction = "both")
+#New model
+M1=lm(sales~youtube+facebook)
+summary(M1)
+ggplot(marketing,aes(x=youtube,y=sales,col=facebook))+geom_point(size=2)+geom_smooth(method = "lm")
+library(car)
+vif(M1)
 
 
 
