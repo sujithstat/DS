@@ -412,3 +412,35 @@ var.test(Res_train,Res_test)
 library(car)
 vif(M1)
 #since VIFs are <5 Multicollinearity does not exist
+
+########### Pract7
+############ MLR 2 Ridge Regression
+rm(list = ls())
+data("mtcars")
+attach(mtcars)
+mtcars$am <- NULL
+mtcars$vs <- NULL
+model1 <- lm(mpg~.,data = mtcars)
+model1
+#The fitted MLR model is
+
+library(corrplot)
+cor1 <- cor(mtcars)
+corrplot.mixed(cor1,lower.col = "black",number.cex=0.7)
+library(car)
+vif(model1)
+
+#Ridge Regression#
+library(glmnet)
+x_var <- data.matrix(mtcars[,c("cyl", "disp","hp","drat", "wt","qsec","gear","carb")])
+y_var <- mtcars[,"mpg"]
+K=seq(0.01,10,0.1)
+fit <- glmnet(x_var,y_var,alpha = 0,lambda = K)
+ridge_cv <- cv.glmnet(x_var,y_var,alpha=0, lambda = K)
+best_K <- ridge_cv$lambda.min
+best_K
+
+#Rebuilding the model using optimum value of K.
+best_ridge <- glmnet(x_var,y_var,alpha = 0,lambda = best_K)
+coef(best_ridge)
+#The fitted Ridge Regression model is
