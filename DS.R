@@ -444,3 +444,52 @@ best_K
 best_ridge <- glmnet(x_var,y_var,alpha = 0,lambda = best_K)
 coef(best_ridge)
 #The fitted Ridge Regression model is
+
+
+######### Pract-8 ##############
+######### Cluster Analysis ################
+#1
+rm(list = ls())
+data("iris")
+na.omit(iris)
+dat=iris[-5]
+wss=(nrow(dat)-1)*sum(apply(dat,2,var))
+for (i in 2:10) wss[i]=sum(kmeans(dat,centers = i)$withinss)
+plot(1:10,wss,type = "b",xlab = "No. of clusters",ylab = "Within groups sum of squares")
+#Ward hierarchical clustering
+d=dist(dat,method = "euclidean")
+fit=hclust(d,method="ward.D")
+plot(fit,labels = iris$Species)#cluster dendrogram
+groups=cutree(fit,k=3)
+rect.hclust(fit,k=3,border = "red")
+#k-means clustering
+fit_kmeans=kmeans(dat,3)#3-cluster solution
+aggregate(dat,by=list(fit_kmeans$cluster),FUN = mean)
+
+CLNO=data.frame(iris,fit_kmeans$cluster);CLNO
+#Appending the cluster no.
+
+
+#2
+rm(list = ls())
+Ht=c(185,170,168,179,182,188,180,183,180)
+Wt=c(72,56,60,68,72,77,70,84,88)
+Gender=c("M","F","F","M","M","M","F","M","M")
+Gend=c(1,0,0,1,1,1,0,1,1)
+dat=data.frame(Ht,Wt,Gend)
+
+wss=(nrow(dat)-1)*sum(apply(dat,2,var))
+for (i in 2:nrow(dat)-1) wss[i]=sum(kmeans(dat,centers = i)$withinss)
+plot(1:length(wss),wss,type = "b",xlab = "No. of clusters",ylab = "Within groups sum of squares")
+#Ward hierarchical clustering
+d=dist(dat,method = "euclidean")
+fit=hclust(d,method="ward.D")
+plot(fit,labels = Gender)#cluster dendrogram
+groups=cutree(fit,k=3)
+rect.hclust(fit,k=3,border = "red")
+#k-means clustering
+fit_kmeans=kmeans(dat,3)#3-cluster solution
+aggregate(dat,by=list(fit_kmeans$cluster),FUN = mean)
+
+CLNO=data.frame(dat,fit_kmeans$cluster);CLNO
+#Appending the cluster no.
