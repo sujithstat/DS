@@ -493,3 +493,64 @@ aggregate(dat,by=list(fit_kmeans$cluster),FUN = mean)
 
 CLNO=data.frame(dat,fit_kmeans$cluster);CLNO
 #Appending the cluster no.
+
+
+######## Pract10
+######## kNN Classification
+#1
+rm(list = ls())
+data("iris")
+dat=iris
+n=nrow(dat);n
+set.seed(100)
+sa=sample(1:n,floor(0.75*n),replace = FALSE)
+train=dat[sa,]
+cl=train$Species
+train=train[,-5]
+test=dat[-sa,]
+true_lab=test$Species
+test=test[,-5]
+k_nn=0
+library(class)
+for(k in 1:10){
+  pred=knn(train,test,cl,k)
+  incorrect=sum(true_lab != pred)
+  mis_rate=sum(incorrect)/length(true_lab)
+  cat(k,mis_rate,"\n")
+  k_nn[k]=mis_rate
+}
+k1=which.min(k_nn);k1
+test=c(6.5,3.2,4.5,2.1)
+knn(train,test,cl,k = k1)
+#We conclude that the species is versicolor
+
+#2
+rm(list = ls())
+library(readxl)
+data_for_cluster <- read_excel("data_for_cluster.xlsx")
+dat=data_for_cluster
+n=nrow(dat);n
+set.seed(100)
+sa=sample(1:n,floor(0.75*n),replace = FALSE)
+train=dat[sa,]
+cl=train$copd
+train=train[,-13]
+test=dat[-sa,]
+true_lab=test$copd
+test=test[,-13]
+k_nn=0
+library(class)
+for(k in 1:10){
+  pred=knn(train,test,cl,k)
+  incorrect=sum(true_lab != pred)
+  mis_rate=sum(incorrect)/length(true_lab)
+  cat(k,mis_rate,"\n")
+  k_nn[k]=mis_rate
+}
+k1=which.min(k_nn);k1
+test1=c(1,60,1.67,67,24,0,1,350,1,250,0,0)
+test2=c(0,65,1.64,78,29,0,1,50,0,0,0,1)
+knn(train,test1,cl,k = k1)
+#We conclude that the first person has copd
+knn(train,test2,cl,k = k1)
+#We conclude that the second person does not have copd
