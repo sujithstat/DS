@@ -450,6 +450,7 @@ coef(best_ridge)
 ######### Cluster Analysis ################
 #1
 rm(list = ls())
+par(mfrow=c(1,2))
 data("iris")
 na.omit(iris)
 dat=iris[-5]
@@ -472,6 +473,7 @@ CLNO=data.frame(iris,fit_kmeans$cluster);CLNO
 
 #2
 rm(list = ls())
+par(mfrow=c(1,2))
 Ht=c(185,170,168,179,182,188,180,183,180)
 Wt=c(72,56,60,68,72,77,70,84,88)
 Gender=c("M","F","F","M","M","M","F","M","M")
@@ -493,6 +495,7 @@ aggregate(dat,by=list(fit_kmeans$cluster),FUN = mean)
 
 CLNO=data.frame(dat,fit_kmeans$cluster);CLNO
 #Appending the cluster no.
+
 
 
 ######## Pract10
