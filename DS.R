@@ -557,3 +557,69 @@ knn(train,test1,cl,k = k1)
 #We conclude that the first person has copd
 knn(train,test2,cl,k = k1)
 #We conclude that the second person does not have copd
+
+####### Pract11
+######## kNN Classification 2
+#1
+rm(list = ls())
+library(ggplot2)
+data("diamonds")
+dat=diamonds
+n=nrow(dat);n
+set.seed(100)
+sa=sample(1:n,floor(0.75*n),replace = FALSE)
+train=dat[sa,]
+cl=train$cut
+train=train[,-c(2,3,4)]
+test=dat[-sa,]
+true_lab=test$cut
+test=test[,-c(2,3,4)]
+#k_nn=0
+library(class)
+#for(k in 1:200){
+#  pred=knn(train,test,cl,k)
+#  incorrect=sum(as.character(true_lab) != as.character(pred))
+#  mis_rate=sum(incorrect)/length(true_lab)
+#  cat(k,mis_rate,"\n")
+#  k_nn[k]=mis_rate
+#}
+#k1=which.min(k_nn);k1
+test=c(0.29,57.1,66.2,338,3.99,4.24,2.65)
+knn(train,test,cl,k = 200)
+#We conclude that the cut is Very Good
+
+
+#2
+rm(list = ls())
+data("chickwts")
+dat=chickwts
+n=nrow(dat);n
+set.seed(100)
+sa=sample(1:n,floor(0.75*n),replace = FALSE)
+train=dat[sa,]
+cl=train$feed
+train=train[,-2]
+train=data.frame(train)
+test=dat[-sa,]
+true_lab=test$feed
+test=test[,-2]
+test=data.frame(test)
+k_nn=0
+library(class)
+for(k in 1:10){
+  pred=knn(train,test,cl,k)
+  incorrect=sum(true_lab != pred)
+  mis_rate=sum(incorrect)/length(true_lab)
+  cat(k,mis_rate,"\n")
+  k_nn[k]=mis_rate
+}
+k1=which.min(k_nn);k1
+test1=225
+test2=340
+test3=500
+knn(train,test1,cl,k = k1)
+#We conclude that the feed is linseed
+knn(train,test2,cl,k = k1)
+#We conclude that the feed is sunflower
+knn(train,test3,cl,k = k1)
+#We conclude that the feed is casein
