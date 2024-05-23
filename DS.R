@@ -496,6 +496,73 @@ aggregate(dat,by=list(fit_kmeans$cluster),FUN = mean)
 CLNO=data.frame(dat,fit_kmeans$cluster);CLNO
 #Appending the cluster no.
 
+######### Pract-9 ##############
+######### Cluster Analysis-2 ################
+#1
+rm(list = ls())
+data("mtcars")
+#na.omit(mtcars)
+dat=mtcars
+wss=(nrow(dat)-1)*sum(apply(dat,2,var))
+for (i in 2:10) wss[i]=sum(kmeans(dat,centers = i)$withinss)
+plot(1:10,wss,type = "b",xlab = "No. of clusters",ylab = "Within groups sum of squares")
+#Ward hierarchical clustering
+d=dist(dat,method = "euclidean")
+fit=hclust(d,method="ward.D")
+plot(fit)#cluster dendrogram
+groups=cutree(fit,k=3)
+rect.hclust(fit,k=3,border = "red")
+#k-means clustering
+fit_kmeans=kmeans(dat,3)#3-cluster solution
+aggregate(dat,by=list(fit_kmeans$cluster),FUN = mean)
+
+CLNO=data.frame(mtcars,fit_kmeans$cluster);CLNO
+#Appending the cluster no.
+
+
+#2
+rm(list = ls())
+data("USArrests")
+#na.omit(mtcars)
+dat=USArrests
+wss=(nrow(dat)-1)*sum(apply(dat,2,var))
+for (i in 2:10) wss[i]=sum(kmeans(dat,centers = i)$withinss)
+plot(1:10,wss,type = "b",xlab = "No. of clusters",ylab = "Within groups sum of squares")
+#Ward hierarchical clustering
+d=dist(dat,method = "euclidean")
+fit=hclust(d,method="ward.D")
+plot(fit)#cluster dendrogram
+groups=cutree(fit,k=3)
+rect.hclust(fit,k=3,border = "red")
+#k-means clustering
+fit_kmeans=kmeans(dat,3)#3-cluster solution
+aggregate(dat,by=list(fit_kmeans$cluster),FUN = mean)
+
+CLNO=data.frame(USArrests,fit_kmeans$cluster);CLNO
+#Appending the cluster no.
+
+
+#3
+rm(list = ls())
+library(readxl)
+data_for_cluster <- read_excel("workspace/data_for_cluster.xlsx")
+
+dat=data_for_cluster
+wss=(nrow(dat)-1)*sum(apply(dat,2,var))
+for (i in 2:10) wss[i]=sum(kmeans(dat,centers = i)$withinss)
+plot(1:10,wss,type = "b",xlab = "No. of clusters",ylab = "Within groups sum of squares")
+#Ward hierarchical clustering
+d=dist(dat,method = "euclidean")
+fit=hclust(d,method="ward.D")
+plot(fit)#cluster dendrogram
+groups=cutree(fit,k=5)
+rect.hclust(fit,k=5,border = "red")
+#k-means clustering
+fit_kmeans=kmeans(dat,3)#3-cluster solution
+aggregate(dat,by=list(fit_kmeans$cluster),FUN = mean)
+
+CLNO=data.frame(data_for_cluster,fit_kmeans$cluster);CLNO
+#Appending the cluster no.
 
 
 ######## Pract10
@@ -623,3 +690,45 @@ knn(train,test2,cl,k = k1)
 #We conclude that the feed is sunflower
 knn(train,test3,cl,k = k1)
 #We conclude that the feed is casein
+
+
+####### Pract-12
+####### Spam Filtering
+#1
+rm(list = ls())
+HamTot=3768
+HamWord=145
+SpamTot=1276
+SpamWord=15
+Tot=HamTot+SpamTot
+Word=HamWord+SpamWord
+SpamGivenWord=((SpamWord/SpamTot)*(SpamTot/Tot))/(Word/Tot)
+HamGivenWord=1-SpamGivenWord
+SpamGivenWord
+HamGivenWord
+
+#2
+rm(list = ls())
+HamTot=1978
+HamWord=30
+SpamTot=595
+SpamWord=10
+Tot=HamTot+SpamTot
+Word=HamWord+SpamWord
+SpamGivenWord=((SpamWord/SpamTot)*(SpamTot/Tot))/(Word/Tot)
+HamGivenWord=1-SpamGivenWord
+SpamGivenWord
+HamGivenWord
+
+#3
+rm(list = ls())
+HamTot=6325-1650
+HamWord=162
+SpamTot=1650
+SpamWord=19
+Tot=HamTot+SpamTot
+Word=HamWord+SpamWord
+SpamGivenWord=((SpamWord/SpamTot)*(SpamTot/Tot))/(Word/Tot)
+HamGivenWord=1-SpamGivenWord
+SpamGivenWord
+HamGivenWord
