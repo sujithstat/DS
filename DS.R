@@ -733,23 +733,40 @@ HamGivenWord=1-SpamGivenWord
 SpamGivenWord
 HamGivenWord
 
-#pract13
+########pract13
+######## Logistic Regression ########
 #1
-
-
-
-
-
-
-
+rm(list = ls())
+data("mtcars")
+help("mtcars")
+model1=glm(mtcars$vs~mtcars$hp,family = binomial)
+b=coefficients(model1);b
+#Logit Transformation:
+#log(p/(1-p))= 8.3780240 + (-0.0685607)*x
+summary(model1)
+#Since p-value < 0.05 we reject H0:b1=0. Therefore, the regression is significant.
+ggplot(mtcars,aes(x = hp,y = vs))+geom_point()+stat_smooth(method="glm",se=FALSE,method.args = list(family=binomial))
+#as hp increases probability of engine being straight reduces
 
 #2
 rm(list = ls())
 x=c(0.5,0.75,1.0,1.25,1.5,1.75,1.75,2.0,2.25,2.5,
     2.75,3.0,3.25,3.5,4.0,4.25,4.5,4.75,5.0,5.5)
 y=c(rep(0,6),rep(c(1,0),4),rep(1,6))
+model1=glm(y~x,family = binomial)
+b=coefficients(model1);b
+#Logit Transformation:
+#log(p/(1-p))= -4.077713  + (1.504645)*x
+summary(model1)
+#Since p-value < 0.05 we reject H0:b1=0. Therefore, the regression is significant.
+ggplot(NULL,aes(x,y))+geom_point()+stat_smooth(method="glm",se=FALSE,method.args = list(family=binomial))
+#as Hours of Study increases probability of Passing increases
+phat=1/(1+exp(-(b[1]+b[2]*3)));phat
+phat=1/(1+exp(-(b[1]+b[2]*4.5)));phat
 
-#pract14
+
+########pract14
+######## Logistic Regression-2 ########
 #1
 rm(list = ls())
 x=c(0.5,0.75,1.0,1.25,1.5,1.75,1.75,2.0,2.25,2.5,
@@ -760,7 +777,7 @@ par(pty="s")
 model1=glm(y~x,family = binomial)
 roc_curve = roc(y,model1$fitted.values,plot=TRUE,legacy.axes=TRUE)
 auc(roc_curve)
-#Since auc=0.895 the Logistic Regression is a good fit.
+#Since auc=0.895 the Logistic Regression model performance is excellent
 
 
 #2
@@ -789,9 +806,9 @@ par(pty="s")
 
 roc_curve_a = roc(d$diabetes,modela$fitted.values,plot=TRUE,legacy.axes=TRUE)
 auc(roc_curve_a)
-#Since auc=0.8058 the Logistic Regression is a good fit.
+#Since auc=0.8058 the Logistic Regression model performance is very good
 
 roc_curve_b = roc(d$diabetes,modelb$fitted.values,plot=TRUE,legacy.axes=TRUE)
 auc(roc_curve_b)
-#Since auc=0.6213 the Logistic Regression is a good fit.
+#Since auc=0.6213 the Logistic Regression model performance is good
 
