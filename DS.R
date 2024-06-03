@@ -732,3 +732,66 @@ SpamGivenWord=((SpamWord/SpamTot)*(SpamTot/Tot))/(Word/Tot)
 HamGivenWord=1-SpamGivenWord
 SpamGivenWord
 HamGivenWord
+
+#pract13
+#1
+
+
+
+
+
+
+
+
+#2
+rm(list = ls())
+x=c(0.5,0.75,1.0,1.25,1.5,1.75,1.75,2.0,2.25,2.5,
+    2.75,3.0,3.25,3.5,4.0,4.25,4.5,4.75,5.0,5.5)
+y=c(rep(0,6),rep(c(1,0),4),rep(1,6))
+
+#pract14
+#1
+rm(list = ls())
+x=c(0.5,0.75,1.0,1.25,1.5,1.75,1.75,2.0,2.25,2.5,
+    2.75,3.0,3.25,3.5,4.0,4.25,4.5,4.75,5.0,5.5)
+y=c(rep(0,6),rep(c(1,0),4),rep(1,6))
+library(pROC)
+par(pty="s")
+model1=glm(y~x,family = binomial)
+roc_curve = roc(y,model1$fitted.values,plot=TRUE,legacy.axes=TRUE)
+auc(roc_curve)
+#Since auc=0.895 the Logistic Regression is a good fit.
+
+
+#2
+rm(list = ls())
+library(mlbench)
+library(ggplot2)
+library(pROC)
+data("PimaIndiansDiabetes2")
+d=na.omit(PimaIndiansDiabetes2)
+str(d$diabetes)
+levels(d$diabetes)
+d$diabetes=as.numeric(d$diabetes)
+str(d$diabetes)
+d$diabetes=d$diabetes-1
+str(d$diabetes)
+modela=glm(d$diabetes~d$glucose,family = binomial)
+summary(modela)
+#Since p-value < 0.05 we reject H0:b1=0. Therefore, the regression is significant.
+modelb=glm(d$diabetes~d$pressure,family = binomial)
+summary(modelb)
+#Since p-value < 0.05 we reject H0:b1=0. Therefore, the regression is significant.
+ggplot(d,aes(x = glucose,y = diabetes))+geom_point()+stat_smooth(method="glm",se=FALSE,method.args = list(family=binomial))
+ggplot(d,aes(x = pressure,y = diabetes))+geom_point()+stat_smooth(method="glm",se=FALSE,method.args = list(family=binomial))
+
+par(pty="s")
+
+roc_curve_a = roc(d$diabetes,modela$fitted.values,plot=TRUE,legacy.axes=TRUE)
+auc(roc_curve_a)
+#Since auc=0.8058 the Logistic Regression is a good fit.
+
+roc_curve_b = roc(d$diabetes,modelb$fitted.values,plot=TRUE,legacy.axes=TRUE)
+auc(roc_curve_b)
+#Since auc=0.6213 the Logistic Regression is a good fit.
+
