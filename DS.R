@@ -544,6 +544,7 @@ CLNO=data.frame(USArrests,fit_kmeans$cluster);CLNO
 
 #3
 rm(list = ls())
+par(mfrow=c(1,2))
 library(readxl)
 data_for_cluster <- read_excel("workspace/data_for_cluster.xlsx")
 
@@ -597,7 +598,7 @@ knn(train,test,cl,k = k1)
 #2
 rm(list = ls())
 library(readxl)
-data_for_cluster <- read_excel("data_for_cluster.xlsx")
+data_for_cluster <- read_excel("workspace/data_for_cluster.xlsx")
 dat=data_for_cluster
 n=nrow(dat);n
 set.seed(100)
@@ -765,8 +766,8 @@ phat=1/(1+exp(-(b[1]+b[2]*3)));phat
 phat=1/(1+exp(-(b[1]+b[2]*4.5)));phat
 
 
-########pract14
-######## Logistic Regression-2 ########
+########  pract14  ########
+######## Logistic Regression-2 
 #1
 rm(list = ls())
 x=c(0.5,0.75,1.0,1.25,1.5,1.75,1.75,2.0,2.25,2.5,
@@ -811,4 +812,127 @@ auc(roc_curve_a)
 roc_curve_b = roc(d$diabetes,modelb$fitted.values,plot=TRUE,legacy.axes=TRUE)
 auc(roc_curve_b)
 #Since auc=0.6213 the Logistic Regression model performance is good
+
+######### Pract15 #######
+######### Logistic Regression 3
+#1
+rm(list = ls())
+library(readr)
+library(pROC)
+admission <- read_csv("Workspace/admission.csv")
+View(admission)
+attach(admission)
+summary(admission)
+str(admission)
+class(admission)
+m1=glm(admit~gpa,family = binomial);m1
+m2=glm(admit~rank,family = binomial);m2
+summary(m1)
+#Since p-value < 0.05 we reject H0:b1=0. Therefore, the regression is significant.
+summary(m2)
+#Since p-value < 0.05 we reject H0:b1=0. Therefore, the regression is significant.
+exp(cbind(coef(m1),confint(m1)))
+exp(cbind(coef(m2),confint(m2)))
+
+#2
+rm(list = ls())
+VitD=c(15.1,19.6,11.9,28.7,36.5,23.4,23.4,24.5,10.7,
+       12.4,18.2,32.9,38.8,34.2,14.1,42.4,9.7,15.5,
+       27.7,28.7,38.5,23,7.8,26.7,15.3,4.3,26.7,
+       8.8,36.5,24.7,51.1,26.2,45.6,32.5)
+BMI=c(15.9,15.6,13.0,23.4,20.5,18.0,14.5,23.8,16.9,
+      15.6,19.0,22.9,21.0,18.7,22.3,22.0,20.1,18.1,
+      23.8,22.6,25.0,20.8,15.2,14.1,18.9,14.3,16.4,
+      18.1,23.2,21.6,20.5,19.8,20.3,20.0)
+TB=c(rep(1,3),rep(0,2),rep(1,2),0,rep(1,3),rep(0,5),rep(1,2),
+     rep(0,4),rep(1,6),rep(0,6))
+m1=glm(TB~VitD,family = binomial);m1
+m2=glm(TB~BMI, family = binomial);m2
+summary(m1)
+#Since p-value < 0.05 we reject H0:b1=0. Therefore, the regression is significant.
+summary(m2)
+#Since p-value < 0.05 we reject H0:b1=0. Therefore, the regression is significant.
+exp(cbind(coef(m1),confint(m1)))
+exp(cbind(coef(m2),confint(m2)))
+
+
+######## Pract16 #############
+######## Multiple Logistic Regression
+#1
+rm(list = ls())
+library(readr)
+library(pROC)
+admission <- read_csv("Workspace/admission.csv")
+View(admission)
+attach(admission)
+m1=glm(admit~gre+gpa+rank,family = binomial);m1
+step(m1,direction = "both")
+exp(cbind(coef(m1),confint(m1)))
+par(pty="s")
+roc_curve = roc(admit,m1$fitted.values,plot=TRUE,legacy.axes=TRUE)
+auc(roc_curve)
+#Since auc=0.6921 the Logistic Regression model performance is good
+
+#2
+rm(list = ls())
+library(readr)
+library(pROC)
+VitD=c(15.1,19.6,11.9,28.7,36.5,23.4,23.4,24.5,10.7,
+       12.4,18.2,32.9,38.8,34.2,14.1,42.4,9.7,15.5,
+       27.7,28.7,38.5,23,7.8,26.7,15.3,4.3,26.7,
+       8.8,36.5,24.7,51.1,26.2,45.6,32.5)
+BMI=c(15.9,15.6,13.0,23.4,20.5,18.0,14.5,23.8,16.9,
+      15.6,19.0,22.9,21.0,18.7,22.3,22.0,20.1,18.1,
+      23.8,22.6,25.0,20.8,15.2,14.1,18.9,14.3,16.4,
+      18.1,23.2,21.6,20.5,19.8,20.3,20.0)
+TB=c(rep(1,3),rep(0,2),rep(1,2),0,rep(1,3),rep(0,5),rep(1,2),
+     rep(0,4),rep(1,6),rep(0,6))
+m1=glm(TB~VitD+BMI,family = binomial);m1
+step(m1,direction = "both")
+exp(cbind(coef(m1),confint(m1)))
+1/exp(cbind(coef(m1),confint(m1)))
+par(pty="s")
+roc_curve = roc(TB,m1$fitted.values,plot=TRUE,legacy.axes=TRUE)
+auc(roc_curve)
+#Since auc=1 the Logistic Regression model performance is excellent
+
+#3
+rm(list = ls())
+library(MASS)
+library(pROC)
+data("birthwt")
+attach(birthwt)
+View(birthwt)
+m1=glm(low~age+race+smoke+ht,family = binomial);m1
+step(m1,direction = "both")
+#The most relevant risk factor for low birth weight are ht, race and smoke
+m2= glm(formula = low ~ race + smoke + ht, family = binomial)
+exp(cbind(coef(m2),confint(m2)))
+1/exp(cbind(coef(m2),confint(m2)))
+par(pty="s")
+roc_curve = roc(low,m2$fitted.values,plot=TRUE,legacy.axes=TRUE)
+auc(roc_curve)
+#Since auc=0.6705 the Logistic Regression model performance is good
+
+
+
+
+######## Pract17 #############
+######## Multiple Logistic Regression 2
+#1
+rm(list = ls())
+library(pROC)
+library(readxl)
+logistic_data <- read_excel("Workspace/logistic_data.xlsx")
+View(logistic_data)
+attach(logistic_data)
+m1=glm(copd~BMI+Smoking+Biomass_exposure,family = binomial);m1
+step(m1,direction = "both")
+#The most relevant risk factors for copd are Biomass_exposure and Smoking
+m2=glm(copd ~ Smoking + Biomass_exposure, family = binomial);m2
+exp(cbind(coef(m2),confint(m2)))
+par(pty="s")
+roc_curve = roc(copd,m2$fitted.values,plot=TRUE,legacy.axes=TRUE)
+auc(roc_curve)
+#Since auc=0.6419 the Logistic Regression model performance is good
 
