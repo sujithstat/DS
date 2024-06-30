@@ -1,5 +1,5 @@
-##### Pract1
-##### Data Exploration & Cleaning #######
+##### Pract-1 #######
+##### Data Exploration & Cleaning 
 #1
 rm(list=ls())
 Z=c(14.5,16.7,18.8,10.3,NA,11.5,19.5,20.6)
@@ -78,7 +78,7 @@ aqi=data.frame(Ozone,Solar.R,Wind,Temp,Month,Day)
 summary(aqi)
 cor(Ozone,Solar.R)
 
-##### Pract2
+##### Pract-2 ####
 #1
 rm(list = ls())
 library(ggplot2)
@@ -151,7 +151,7 @@ ggplot(iris,aes(x=Species,y=Sepal.Width)) + geom_boxplot() + ggtitle("Boxplot of
 ggplot(iris,aes(x=Species,y=Petal.Length)) + geom_boxplot() + ggtitle("Boxplot of Petal.Length")
 ggplot(iris,aes(x=Species,y=Petal.Width)) + geom_boxplot() + ggtitle("Boxplot of Petal.Width")
 
-##### Pract3
+##### Pract-3 #####
 ####### Simple Linear Regression - 1
 #1
 rm(list = ls())
@@ -202,7 +202,7 @@ qqnorm(model1$residuals)
 qqline(model1$residuals)
 
 
-########Pract4
+######## Pract-4 ########
 ######## SLR-2
 rm(list=ls())
 data("cars")
@@ -269,7 +269,7 @@ var.test(Res_train,Res_test)
 #Since p-value > 0.05 we do not reject H0
 #Therefore, the model is a good fit.
 
-####### Pract5
+####### Pract-5 ###########
 ####### SLR-3
 rm(list = ls())
 data("airquality")
@@ -282,8 +282,8 @@ dim(airquality)
 head(airquality)
 oz=Ozone
 tem=Temp
-oz[is.na(oz)]=mean(oz,na.rm = TRUE)    ###########################
-tem[is.na(tem)]=mean(tem,na.rm = TRUE) ###########################
+oz[is.na(oz)]=mean(oz,na.rm = TRUE)    
+tem[is.na(tem)]=mean(tem,na.rm = TRUE)
 data1=data.frame(tem,oz)
 
 library(ggplot2)
@@ -355,7 +355,7 @@ var.test(Res_train,Res_test)
 #Therefore, the model is a good fit.
 
 
-############ Pract6
+############ Pract-6 #######
 ############ MLR 3
 #1
 rm(list = ls())
@@ -413,7 +413,7 @@ library(car)
 vif(M1)
 #since VIFs are <5 Multicollinearity does not exist
 
-########### Pract7
+########### Pract-7 ##########
 ############ MLR 2 Ridge Regression
 rm(list = ls())
 data("mtcars")
@@ -447,7 +447,7 @@ coef(best_ridge)
 
 
 ######### Pract-8 ##############
-######### Cluster Analysis ################
+######### Cluster Analysis
 #1
 rm(list = ls())
 par(mfrow=c(1,2))
@@ -497,7 +497,7 @@ CLNO=data.frame(dat,fit_kmeans$cluster);CLNO
 #Appending the cluster no.
 
 ######### Pract-9 ##############
-######### Cluster Analysis-2 ################
+######### Cluster Analysis-2
 #1
 rm(list = ls())
 data("mtcars")
@@ -566,7 +566,7 @@ CLNO=data.frame(data_for_cluster,fit_kmeans$cluster);CLNO
 #Appending the cluster no.
 
 
-######## Pract10
+######## Pract-10 #######
 ######## kNN Classification
 #1
 rm(list = ls())
@@ -626,7 +626,7 @@ knn(train,test1,cl,k = k1)
 knn(train,test2,cl,k = k1)
 #We conclude that the second person does not have copd
 
-####### Pract11
+####### Pract-11 #######
 ######## kNN Classification 2
 #1
 rm(list = ls())
@@ -693,7 +693,7 @@ knn(train,test3,cl,k = k1)
 #We conclude that the feed is casein
 
 
-####### Pract-12
+####### Pract-12 #######
 ####### Spam Filtering
 #1
 rm(list = ls())
@@ -734,10 +734,11 @@ HamGivenWord=1-SpamGivenWord
 SpamGivenWord
 HamGivenWord
 
-########pract13
-######## Logistic Regression ########
+######## pract-13 #######
+######## Logistic Regression
 #1
 rm(list = ls())
+library(ggplot2)
 data("mtcars")
 help("mtcars")
 model1=glm(mtcars$vs~mtcars$hp,family = binomial)
@@ -751,6 +752,7 @@ ggplot(mtcars,aes(x = hp,y = vs))+geom_point()+stat_smooth(method="glm",se=FALSE
 
 #2
 rm(list = ls())
+library(ggplot2)
 x=c(0.5,0.75,1.0,1.25,1.5,1.75,1.75,2.0,2.25,2.5,
     2.75,3.0,3.25,3.5,4.0,4.25,4.5,4.75,5.0,5.5)
 y=c(rep(0,6),rep(c(1,0),4),rep(1,6))
@@ -766,7 +768,7 @@ phat=1/(1+exp(-(b[1]+b[2]*3)));phat
 phat=1/(1+exp(-(b[1]+b[2]*4.5)));phat
 
 
-########  pract14  ########
+########  pract 14  ########
 ######## Logistic Regression-2 
 #1
 rm(list = ls())
@@ -813,7 +815,7 @@ roc_curve_b = roc(d$diabetes,modelb$fitted.values,plot=TRUE,legacy.axes=TRUE)
 auc(roc_curve_b)
 #Since auc=0.6213 the Logistic Regression model performance is good
 
-######### Pract15 #######
+######### Pract-15 #######
 ######### Logistic Regression 3
 #1
 rm(list = ls())
@@ -856,7 +858,7 @@ exp(cbind(coef(m1),confint(m1)))
 exp(cbind(coef(m2),confint(m2)))
 
 
-######## Pract16 #############
+######## Pract-16 #############
 ######## Multiple Logistic Regression
 #1
 rm(list = ls())
@@ -917,7 +919,7 @@ auc(roc_curve)
 
 
 
-######## Pract17 #############
+######## Pract-17 #############
 ######## Multiple Logistic Regression 2
 #1
 rm(list = ls())
@@ -936,3 +938,113 @@ roc_curve = roc(copd,m2$fitted.values,plot=TRUE,legacy.axes=TRUE)
 auc(roc_curve)
 #Since auc=0.6419 the Logistic Regression model performance is good
 
+
+######## C2 ###########
+#1
+rm(list = ls())
+Age=c(35,82,60,44,28,55,47,42,64,39,36,42,24,75,54)
+BMI=c(15.2,16.0,16.8,16.4,23.4,15.2,12.0,16.9,23.7,26.9,23.0,22.3,16.5,15.6,18.9)
+VitD=c(15.9,15.5,27,26.7,28.7,5.6,19.4,30.5,10.2,33.7,11.0,14.8,24.7,12.4,15.3)
+TB=c(rep(1,4),0,rep(1,3),rep(0,5),rep(1,2))
+library(class)
+dat1=data.frame(Age,BMI,VitD)
+cl=TB
+test1=c(45,17.6,16.9)
+test2=c(67,24.3,22.0)
+knn(train = dat1,test = test1,cl = cl,k = 5)
+knn(train = dat1,test = test2,cl = cl,k = 5)
+
+set.seed(100)
+n=length(TB)
+sa=sample(1:n,floor(0.75*n),replace = FALSE)
+train=dat1[sa,]
+cl=TB[sa]
+test=dat1[-sa,]
+testcl=TB[-sa]
+misclas=c()
+for (k in 1:5) {
+  pred=knn(train,test,cl,k)
+  misclas[k]=sum(pred!=testcl)/length(pred)
+  cat(k,misclas[k],"\n")
+}
+
+#2
+rm(list = ls())
+library(readr)
+admission <- read_csv("Workspace/admission.csv")
+View(admission)
+attach(admission)
+m1=glm(admit~gre,family=binomial);m1
+#Logit Function
+#log(p/(1-p))=-2.901344 + 0.003582*x
+summary(m1)
+#Since P-value<0.05, we reject H0:b1=0. Therefore, the regression is significant.
+exp(cbind(coef(m1),confint(m1)))
+#For 1 unit increase in gre the odds of getting admission increases by a factor of 1.0035886
+library(pROC)
+roc_curve=roc(admit,m1$fitted.values,plot=TRUE,legacy.axes=TRUE)
+auc(roc_curve)
+#Since auc=0.6094 the performance of the Logistic Regression model is good
+
+#3a
+rm(list = ls())
+HamWord=116
+HamTot=2768
+SpamWord=23
+SpamTot=895
+Word=HamWord+SpamWord
+Tot=HamTot+SpamTot
+SpamGivenWord=((SpamWord/SpamTot)*(SpamTot/Tot))/(Word/Tot)
+HamGivenWord= 1- SpamGivenWord
+HamGivenWord
+#The probability that mail is ham given the word "password" is 0.8345324
+
+#3b
+rm(list = ls())
+library(MASS)
+data("Pima.te")
+attach(Pima.te)
+help("Pima.te")
+View(Pima.te)
+y=as.numeric(type)-1
+m1=glm(y~glu+bp+bmi+age,family = binomial);m1
+exp(cbind(coef(m1),confint(m1)))
+1/exp(cbind(coef(m1),confint(m1)))
+#For 1 unit increase in glu the odds of having diabetes increases by a factor of 1.0378739296
+#For 1 unit increase in bp the odds of having diabetes decreases by a factor of 1.0106718
+#For 1 unit increase in bmi the odds of having diabetes increases by a factor of 1.0887846939
+#For 1 unit increase in age the odds of having diabetes increases by a factor of 1.0525926881
+step(m1,direction = "both")
+#The significant regressors are glu,bmi,age
+
+###### Pract-18 #######
+##### Principal Component Analysis
+#1
+rm(list = ls())
+data("iris")
+iris=iris[,-5]
+PC=princomp(iris);PC
+screeplot(PC,type = "l")
+#We can see the elbow at PC 2, so the number of PCs to be retained is 2
+summary(PC)
+#The proportion of variance explained by the first 2 PCs is 0.9776852
+PC$loadings
+#
+biplot(PC,col=c(2,3),cex=c(0.75,1.0))
+#Petal.Length contributes more to the 1st PC, and Sepal.Width contributes more to the 2nd PC
+
+#2
+rm(list=ls())
+library(readr)
+Bodyfat <- read_csv("Workspace/Bodyfat.csv")
+View(Bodyfat)
+summary(Bodyfat)
+anyNA(Bodyfat)
+PC=princomp(Bodyfat);PC
+screeplot(PC,type = "l")
+#We can see the elbow at PC 2, so the number of PCs to be retained is 2
+su=summary(PC)
+#The proportion of variance explained by the first 2 PCs is 0.9230384
+PC$loadings
+biplot(PC,col=c(2,3),cex=c(0.75,1.0))
+# Chest and Abdomen contribute more to 1st PC, and Hip and Thigh contribute more to 2nd PC
