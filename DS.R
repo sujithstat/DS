@@ -939,6 +939,108 @@ auc(roc_curve)
 #Since auc=0.6419 the Logistic Regression model performance is good
 
 
+###### Pract-18 #######
+##### Principal Component Analysis
+#1
+rm(list = ls())
+data("iris")
+iris=iris[,-5]
+PC=princomp(iris);PC
+screeplot(PC,type = "l")
+#We can see the elbow at PC 2, so the number of PCs to be retained is 2
+summary(PC)
+#The proportion of variance explained by the first 2 PCs is 0.9776852
+PC$loadings
+#Y1 = 0.361(Sepal.Length) + 0.857(Petal.Length) + 0.358(Petal.Width)
+#Y2 = 0.657(Sepal.Length) + 0.730(Sepal.Width)  - 0.173(Petal.Length)
+#Similarly other PCs can be calculated
+biplot(PC,col=c(2,3),cex=c(0.75,1.0))
+#Petal.Length contributes more to the 1st PC, and Sepal.Width contributes more to the 2nd PC
+
+#2
+rm(list=ls())
+library(readr)
+Bodyfat <- read_csv("Workspace/Bodyfat.csv")
+View(Bodyfat)
+summary(Bodyfat)
+anyNA(Bodyfat)
+PC=princomp(Bodyfat);PC
+screeplot(PC,type = "l")
+#We can see the elbow at PC 2, so the number of PCs to be retained is 2
+su=summary(PC)
+#The proportion of variance explained by the first 2 PCs is 0.9230384
+PC$loadings
+#Y1 = 0.122(Neck) + 0.502(Chest) + 0.658(Abdomen) + 0.420(Hip) + 0.280(Thigh) + 0.121(Knee) + 0.056(Ankle) + 0.145(Biceps) + 0.074(Forearm) + 0.039(Wrist)
+#Y2 = 0.024(Neck) - 0.384(Chest) - 0.384(Abdomen) + 0.509(Hip) + 0.600(Thigh) + 0.175(Knee) + 0.115(Ankle) + 0.183(Biceps) + 0.088(Forearm) + 0.014(Wrist)
+#Similarly other PCs can be calculated
+biplot(PC,col=c(2,3),cex=c(0.75,1.0))
+# Chest and Abdomen contribute more to 1st PC, and Hip and Thigh contribute more to 2nd PC
+
+######## Pract-19 ########
+#1
+rm(list=ls())
+X1=c(105,115,103,94,95,104,120,121,127,79)
+X2=c(42,46,26,39,29,33,48,58,45,20)
+X3=c(10,12,5,6,7,8,12,15,11,4)
+X=as.matrix(data.frame(X1,X2,X3))
+R=cov(X)
+lambda=eigen(R)$values
+e=eigen(R)$vectors #columns contain the eigenvectors
+for(i in 1:length(lambda))
+  print(lambda[i]/sum(lambda))
+#Since the proportion of variance contributed by 1st PC = 91.92502%, it is sufficient to retain only the 1st PC
+# The PCs are:
+#Y1 = -0.7859313*X1 -0.5907893*X2 -0.1824281*X3
+#Y2 = 0.6158240*X1 -0.7743723*X2 -0.1452871*X3
+#y3 = -0.05543322*X1 -0.22652927*X2 +0.97242565*X3
+
+
+#2
+rm(list = ls())
+library(readxl)
+PCA_data <- read_excel("Workspace/PCA_data.xlsx")
+View(PCA_data)
+X=scale(PCA_data)
+PC=princomp(X);PC
+screeplot(PC,type = "l")
+summary(PC)
+#The proportion of variance explained by the first 3 PCs is 0.8594388, so the number of PCs to be retained is 3
+PC$loadings
+#Y1 = 0.302(Age) -0.330(BMI) -0.434(Chest symptom duration) +0.541(Smoking) +0.565(smoking duration)
+#Y2 = 0.688(Age) +0.654(BMI) +0.264(Chest symptom duration) +0.161(smoking duration)
+#Y3 = 0.651(Age) -0.522(BMI) -0.108(Chest symptom duration) -0.436(Smoking) -0.319(smoking duration)
+#Similarly other PCs can be calculated
+biplot(PC,col=c(2,3),cex=c(0.75,1.0))
+#"Smoking" and "smoking duration" contribute more to 1st PC
+#"Age" and "BMI" contribute more to 2nd PC
+#"Age" and "BMI" contribute more to 3rd PC
+
+#
+
+
+
+
+
+
+
+########### C1 ##################
+#1
+rm(list = ls())
+library(ggplot2)
+data("trees")
+attach(trees)
+anyNA(trees)
+summary(trees)
+str(trees)
+class(trees)
+help(trees)
+hist(Girth)
+cor.test(Volume,Girth)
+#cor = 0.9671194. Since P-value < 0.05, we reject H0:rho=0, and we conclude that the correlation is significant.
+m1=lm(Volume~Girth);m1
+ggplot(trees,aes(x = Girth,y = Volume))+geom_point()+stat_smooth(method = "lm")
+
+
 ######## C2 ###########
 #1
 rm(list = ls())
@@ -1016,35 +1118,3 @@ exp(cbind(coef(m1),confint(m1)))
 #For 1 unit increase in age the odds of having diabetes increases by a factor of 1.0525926881
 step(m1,direction = "both")
 #The significant regressors are glu,bmi,age
-
-###### Pract-18 #######
-##### Principal Component Analysis
-#1
-rm(list = ls())
-data("iris")
-iris=iris[,-5]
-PC=princomp(iris);PC
-screeplot(PC,type = "l")
-#We can see the elbow at PC 2, so the number of PCs to be retained is 2
-summary(PC)
-#The proportion of variance explained by the first 2 PCs is 0.9776852
-PC$loadings
-#
-biplot(PC,col=c(2,3),cex=c(0.75,1.0))
-#Petal.Length contributes more to the 1st PC, and Sepal.Width contributes more to the 2nd PC
-
-#2
-rm(list=ls())
-library(readr)
-Bodyfat <- read_csv("Workspace/Bodyfat.csv")
-View(Bodyfat)
-summary(Bodyfat)
-anyNA(Bodyfat)
-PC=princomp(Bodyfat);PC
-screeplot(PC,type = "l")
-#We can see the elbow at PC 2, so the number of PCs to be retained is 2
-su=summary(PC)
-#The proportion of variance explained by the first 2 PCs is 0.9230384
-PC$loadings
-biplot(PC,col=c(2,3),cex=c(0.75,1.0))
-# Chest and Abdomen contribute more to 1st PC, and Hip and Thigh contribute more to 2nd PC
